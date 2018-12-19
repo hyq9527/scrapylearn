@@ -9,16 +9,14 @@ class JobbolespiderSpider(scrapy.Spider):
     allowed_domains = ['blog.jobbole.com']
     start_urls = ['http://blog.jobbole.com/all-posts/']
 
-
-
     def parse(self, response):
-
-
-        post_urls = response.css("#archive .post-thumb a::attr(href)").extract()
-        for post_url in post_urls:
-         yield Request(url=parse.urljoin(response.url,post_url), callback=self.parse_detail)
-
-
+        post_nodes = response.css("#archive .post-thumb a")
+        for post_node in post_nodes:
+         post_url = post_node.css("::attr(href)").extract_first("")
+         front_image_url = post_node.css("img::attr(src)").extract_first("")
+         yield Request(url=parse.urljoin(response.url,post_url),
+                       meta={"front_image_url", parse.urljoin(response.url, front_image_url)},
+                       callback=self.parse_detail)
          next_url = response.css(".next.page-numbers::attr(href)").extract_first()
         if next_url:
             yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)
