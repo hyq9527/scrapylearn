@@ -5,7 +5,7 @@ from scrapy.http import Request
 from urllib import parse
 from scrapylearn.items import JobboleArticleItem
 from scrapylearn.utils.common import get_md5
-
+import datetime
 class JobbolespiderSpider(scrapy.Spider):
     name = 'JobboleSpider'
     allowed_domains = ['blog.jobbole.com']
@@ -19,9 +19,9 @@ class JobbolespiderSpider(scrapy.Spider):
          yield Request(url=parse.urljoin(response.url,post_url),
                        meta={"front_image_url":parse.urljoin(response.url, front_image_url)},
                        callback=self.parse_detail)
-         next_url = response.css(".next.page-numbers::attr(href)").extract_first()
-        if next_url:
-            yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)
+        #  next_url = response.css(".next.page-numbers::attr(href)").extract_first()
+        # if next_url:
+        #     yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)
 
     def parse_detail(self,response):
         try:
@@ -47,13 +47,18 @@ class JobbolespiderSpider(scrapy.Spider):
             front_image_url = response.meta.get("front_image_url", "")
             article_item = JobboleArticleItem()
             article_item["title"] = title
+            try:
+                create_date = datetime.datetime.strftime(create_date,"%Y/%m/%d").date()
+            except Exception as e:
+                create_date = datetime.datetime.now().date()
+
             article_item["create_date"] = create_date
             article_item["praise_nums"] = praise_nums
             article_item["fav_nums"] = fav_nums
             article_item["comment_nums"] = comment_nums
             article_item["content"] = content
             article_item["tags"] = tags
-            article_item["front_image_url"] = front_image_url
+            article_item["front_image_url"] = [front_image_url]
             # article_item["front_image_path"] = front_image_path
             article_item["url"] = response.url
             article_item["url_object_id"] = get_md5(response.url)
