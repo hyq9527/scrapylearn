@@ -65,8 +65,8 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'scrapylearn.pipelines.JsonExportPipeline': 300,
-   'scrapylearn.pipelines.ArticleImagePipeline': 1
+   'scrapylearn.pipelines.MongoDBPipeline': 300,
+   # 'scrapylearn.pipelines.ArticleImagePipeline': 1
 }
 IMAGES_URLS_FIELD = "front_image_url"
 project_dir = os.path.abspath(os.path.dirname(__file__))
@@ -93,3 +93,7 @@ IMAGES_STORE = os.path.join(project_dir, "images")
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+MONGODB_HOST = "127.0.0.1:27017"
+MONGODB_DBNAME = "jobbole"
+MONGODB_USER = "9527"
+MONGODB_PWD = "9527"

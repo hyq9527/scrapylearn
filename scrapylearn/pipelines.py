@@ -33,3 +33,12 @@ class ArticleImagePipeline(ImagesPipeline):
             image_file_path = value["path"]
         item["front_image_path"] = image_file_path
         return item
+
+class MongoDBPipeline(object):
+    @classmethod
+    def from_settings(cls,settings):
+        host = settings["MONGODB_HOST"]
+        db = settings["MONGODB_DBNAME"]
+        user = settings["MONGODB_USER"]
+        passwd = settings["MONGODB_PWD"]
+        pass
