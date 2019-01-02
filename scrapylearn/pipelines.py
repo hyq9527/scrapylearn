@@ -44,15 +44,16 @@ class MongoDBPipeline(object):
 
     @classmethod
     def from_settings(cls,settings):
-        dbparams=dict(
+
         host = settings["MONGODB_HOST"],
         port = settings["MONGODB_PORT"],
         username = settings["MONGODB_USER"],
         password = settings["MONGODB_PWD"],
-        )
+        collection = settings["MONGODB_COLLECTION"],
         dbase = settings["MONGODB_DBNAME"]
-        conn = MongoClient(**dbparams)
-        return cls(conn.dbase)
+        conn = MongoClient(host=host,port=port)
+        conn[dbase].authenticate(name=username,password=password)
+        return cls(conn[dbase][collection])
 
 
     def process_item(self, item, spider):
