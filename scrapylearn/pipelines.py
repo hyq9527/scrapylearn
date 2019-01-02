@@ -8,6 +8,7 @@ from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exporters import JsonItemExporter
 from twisted.enterprise import adbapi
 from pymongo import MongoClient
+import json
 
 class ScrapylearnPipeline(object):
     def process_item(self, item, spider):
@@ -44,19 +45,21 @@ class MongoDBPipeline(object):
 
     @classmethod
     def from_settings(cls,settings):
-
-        host = settings["MONGODB_HOST"],
-        port = settings["MONGODB_PORT"],
-        username = settings["MONGODB_USER"],
-        password = settings["MONGODB_PWD"],
-        collection = settings["MONGODB_COLLECTION"],
+        host = settings["MONGODB_HOST"]
+        port = settings["MONGODB_PORT"]
+        username = settings["MONGODB_USER"]
+        password = settings["MONGODB_PWD"]
+        collection = settings["MONGODB_COLLECTION"]
         dbase = settings["MONGODB_DBNAME"]
         conn = MongoClient(host=host,port=port)
-        conn[dbase].authenticate(name=username,password=password)
+        conn[dbase].authenticate(name=username, password=password)
         return cls(conn[dbase][collection])
 
 
     def process_item(self, item, spider):
-       self.db.article_detail.insert(item)
+       data = dict(item)
+       data['create_date'] = str(data['create_date'])
+       data['title'] = data['title']
+       self.db.insert(data)
        return item
 
