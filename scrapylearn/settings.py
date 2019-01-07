@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'scrapylearn.pipelines.MongoDBPipeline': 300,
+   'scrapylearn.pipelines.ScrapylearnPipeline': 300,
    # 'scrapylearn.pipelines.ArticleImagePipeline': 1
 }
 IMAGES_URLS_FIELD = "front_image_url"
