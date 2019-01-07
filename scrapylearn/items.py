@@ -41,6 +41,9 @@ def remove_comment_tags(value):
     else:
         return value
 
+def return_value(value):
+    return value
+
 class JobboleArticleItem(scrapy.Item):
     title = scrapy.Field()
     create_date = scrapy.Field(
@@ -62,5 +65,7 @@ class JobboleArticleItem(scrapy.Item):
     )
     url = scrapy.Field()
     url_object_id = scrapy.Field()
-    front_image_url = scrapy.Field()
+    front_image_url = scrapy.Field(
+        output_processor=MapCompose(return_value)
+    )
     front_image_path = scrapy.Field()
