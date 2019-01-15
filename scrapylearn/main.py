@@ -4,6 +4,7 @@ import sys
 import os
 import re
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-execute(["scrapy", "crawl", "JobboleSpider"])
+# execute(["scrapy", "crawl", "JobboleSpider"])
+execute(["scrapy", "crawl", "douban"])
 # match_re = re.match(".*(\d+).*"," 4 收藏")
 # print(match_re)
