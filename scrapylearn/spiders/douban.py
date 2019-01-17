@@ -28,9 +28,12 @@ class DoubanSpider(scrapy.Spider):
                 "form_password":"hyq19900625"
             },
             headers=self.header,
-            callback=self.check_login
+            callback=self.check_login,
+            dont_filter=True
         )]
 
     def check_login(self,response):
-
+        if "https://www.douban.com/mine/" in response.text:
+            for url in self.start_urls:
+                yield scrapy.Request(url=url,headers=self.header,dont_filter=True)
         pass
